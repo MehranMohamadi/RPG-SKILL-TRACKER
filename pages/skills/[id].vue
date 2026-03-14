@@ -9,7 +9,8 @@
             class="flex h-16 w-16 items-center justify-center rounded-3xl text-3xl"
             :style="{ background: `${skill.color}25` }"
           >
-            {{ skill.icon }}
+            <SkillIcon v-if="isSkillIconName(skill.icon)" :name="skill.icon" />
+            <span v-else>{{ skill.icon }}</span>
           </div>
           <div>
             <h1 class="text-2xl font-semibold tracking-tight text-slate-100">
@@ -124,6 +125,7 @@
 
 <script setup lang="ts">
 import type { Activity } from '~/types'
+import { isSkillIconName } from '~/composables/useSkillIcons'
 
 const route = useRoute()
 const skillsStore = useSkillsStore()

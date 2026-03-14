@@ -9,7 +9,8 @@
           class="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl"
           :style="{ background: `${skill.color}30`, color: '#e2e8f0' }"
         >
-          {{ skill.icon }}
+          <SkillIcon v-if="isSkillIconName(skill.icon)" :name="skill.icon" />
+          <span v-else>{{ skill.icon }}</span>
         </div>
         <div>
           <h3 class="text-base font-semibold text-slate-100">
@@ -40,6 +41,7 @@
 
 <script setup lang="ts">
 import type { Skill } from '~/types'
+import { isSkillIconName } from '~/composables/useSkillIcons'
 
 defineProps<{
   skill: Skill

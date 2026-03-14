@@ -38,39 +38,60 @@
           </NuxtLink>
         </nav>
 
-        <div class="flex items-center gap-1 rounded-2xl border border-slate-700 bg-slate-900/70 p-1 text-xs">
-          <button
-            class="rounded-xl px-3 py-2 transition"
-            :class="theme === 'dark' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'"
-            @click="setTheme('dark')"
+        <button
+          class="flex items-center gap-2 rounded-2xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-800"
+          :title="theme === 'dark' ? t('app.themeLight') : t('app.themeDark')"
+          @click="toggleTheme"
+        >
+          <svg
+            v-if="theme === 'dark'"
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {{ t('app.themeDark') }}
-          </button>
-          <button
-            class="rounded-xl px-3 py-2 transition"
-            :class="theme === 'light' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'"
-            @click="setTheme('light')"
+            <path d="M12 3V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M12 19V21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M3 12H5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M19 12H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M4.93 19.07L6.34 17.66" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M17.66 6.34L19.07 4.93" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+          <svg
+            v-else
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {{ t('app.themeLight') }}
-          </button>
-        </div>
+            <path
+              d="M20.354 15.354A9 9 0 1 1 8.646 3.646a7 7 0 1 0 11.708 11.708Z"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>{{ theme === 'dark' ? t('app.themeDark') : t('app.themeLight') }}</span>
+        </button>
 
-        <div class="flex items-center gap-1 rounded-2xl border border-slate-700 bg-slate-900/70 p-1 text-xs">
-          <button
-            class="rounded-xl px-3 py-2 transition"
-            :class="locale === 'en' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'"
-            @click="setLocale('en')"
-          >
-            {{ t('app.english') }}
-          </button>
-          <button
-            class="rounded-xl px-3 py-2 transition"
-            :class="locale === 'fa' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'"
-            @click="setLocale('fa')"
-          >
-            {{ t('app.persian') }}
-          </button>
-        </div>
+        <button
+          class="flex items-center gap-2 rounded-2xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-800"
+          :title="locale === 'en' ? t('app.persian') : t('app.english')"
+          @click="toggleLocale"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M12 3C14.5 5.3 16 8.5 16 12C16 15.5 14.5 18.7 12 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M12 3C9.5 5.3 8 8.5 8 12C8 15.5 9.5 18.7 12 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M4.5 7.5H19.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M4.5 16.5H19.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <span>{{ locale === 'en' ? t('app.english') : t('app.persian') }}</span>
+        </button>
       </div>
       </div>
     </header>
@@ -112,6 +133,14 @@
 const { toasts, remove } = useToast()
 const { locale, isRtl, t, setLocale } = useI18n()
 const { theme, setTheme } = useTheme()
+
+const toggleTheme = () => {
+  setTheme(theme.value === 'dark' ? 'light' : 'dark')
+}
+
+const toggleLocale = () => {
+  setLocale(locale.value === 'en' ? 'fa' : 'en')
+}
 
 useHead(() => ({
   htmlAttrs: {

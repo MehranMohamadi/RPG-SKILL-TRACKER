@@ -23,7 +23,8 @@
               class="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl"
               :style="{ background: `${skill.color}25` }"
             >
-              {{ skill.icon }}
+              <SkillIcon v-if="isSkillIconName(skill.icon)" :name="skill.icon" />
+              <span v-else>{{ skill.icon }}</span>
             </div>
             <div>
               <h2 class="font-semibold text-slate-100">
@@ -62,6 +63,8 @@
 </template>
 
 <script setup lang="ts">
+import { isSkillIconName } from '~/composables/useSkillIcons'
+
 const skillsStore = useSkillsStore()
 const { push } = useToast()
 
