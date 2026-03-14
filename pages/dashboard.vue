@@ -79,11 +79,11 @@
         <div class="glass-card p-5">
           <div class="mb-4 flex items-center justify-between gap-3">
             <div>
-              <h2 class="section-title">Unlocked Achievements</h2>
-              <p class="section-copy">Milestones you already claimed.</p>
+              <h2 class="section-title">{{ t('app.achievements') }}</h2>
+              <p class="section-copy">{{ t('achievements.subtitle') }}</p>
             </div>
             <NuxtLink to="/achievements" class="text-sm font-medium text-blue-400 hover:text-blue-300">
-              View all
+              {{ t('app.achievements') }}
             </NuxtLink>
           </div>
 
@@ -105,7 +105,7 @@
               v-if="latestUnlocked.length === 0"
               class="rounded-2xl border border-dashed border-slate-700 p-6 text-sm text-slate-400"
             >
-              No achievements unlocked yet.
+              {{ t('achievements.unlockedCounter', { unlocked: 0, total: n(progress.length) }) }}
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@
 <script setup lang="ts">
 const skillsStore = useSkillsStore()
 const xpStore = useXpStore()
-const { d, n } = useI18n()
+const { d, n, t } = useI18n()
 const highlightSkillId = useState<string | null>('highlight-skill-id', () => null)
 
 await Promise.all([skillsStore.fetchSkills(), xpStore.fetchDashboard()])

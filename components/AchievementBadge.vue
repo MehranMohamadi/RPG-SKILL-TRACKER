@@ -20,10 +20,10 @@
             {{ title }}
           </p>
           <span
-            class="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
+            class="rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-wide"
             :class="unlocked ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-700 text-slate-300'"
           >
-            {{ unlocked ? 'Unlocked' : `${progress}%` }}
+            {{ unlocked ? t('common.unlocked') : `${progress}%` }}
           </span>
         </div>
         <p class="text-sm text-slate-400">
@@ -63,7 +63,7 @@ withDefaults(
     unlockedAt: null
   }
 )
-const { d } = useI18n()
+const { d, t } = useI18n()
 
 const formatDate = (value: string) => d(value)
 </script>

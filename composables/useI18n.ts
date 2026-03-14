@@ -6,9 +6,12 @@ const messages = {
       subtitle: 'Turn real-life progress into a steady RPG-style climb.',
       dashboard: 'Dashboard',
       skills: 'Skills',
+      achievements: 'Achievements',
       english: 'English',
       persian: 'فارسی',
-      close: 'Close'
+      close: 'Close',
+      themeDark: 'Dark',
+      themeLight: 'Light'
     },
     common: {
       xp: 'XP',
@@ -17,73 +20,19 @@ const messages = {
       activities: 'activities',
       skill: 'Skill',
       notFound: 'Skill not found.',
-      optional: 'Optional'
-    },
-    dashboard: {
-      yourSkills: 'Your Skills',
-      tracksCopy: 'Quick access to your active growth tracks.',
-      newSkill: 'New skill',
-      noSkills: 'No skills yet. Create your first one to start the progression loop.',
-      activityLog: "Today's Activity Log",
-      activityLogCopy: 'Recent actions and the XP they generated.',
-      noActivityLogs: "Complete an activity to start building today's log.",
-      achievements: 'Achievements',
-      achievementsCopy: 'Milestones unlocked as your system compounds.',
-      noAchievements: 'Achievements will appear as you complete activities and reach milestones.'
-    },
-    stats: {
-      totalXp: 'Total XP',
-      totalXpCopy: 'Every completed activity pushes your account forward.',
-      userLevel: 'User Level',
-      userLevelCopy: 'A cross-skill snapshot of your current momentum.',
-      skills: 'Skills',
-      skillsCopy: 'Focused disciplines you are actively growing.',
-      completedToday: 'Completed Today',
-      completedTodayCopy: "A quick pulse check on today's consistency."
+      optional: 'Optional',
+      days: 'days',
+      unlocked: 'Unlocked'
     },
     skills: {
-      title: 'Skills',
-      copy: 'Create, update, and prune the tracks that shape your growth.',
-      createSkill: 'Create skill',
-      updateSkill: 'Update skill',
-      open: 'Open',
-      delete: 'Delete',
-      emptyDescription: 'A steady track for long-term progression.',
-      createdTitle: 'Skill created',
-      createdMessage: '{name} is ready for XP gains.',
-      updatedTitle: 'Skill updated',
-      updatedMessage: 'Your skill details were saved successfully.',
-      removedTitle: 'Skill removed',
-      removedMessage: 'The skill and its activities have been deleted.',
-      createTitle: 'Create Skill',
-      createCopy: 'Define a new area to level up over time.',
-      detailsLevelXp: 'Level {level} - {xp} XP banked'
+      delete: 'Delete'
     },
     activities: {
-      editActivity: 'Edit Activity',
-      addActivity: 'Add Activity',
-      formCopy: 'Activities are the repeatable actions that generate XP.',
-      updateActivity: 'Update activity',
-      addActivityButton: 'Add activity',
-      cancelEditing: 'Cancel editing',
-      listTitle: 'Activities',
-      listCopy: 'Complete tasks, gain XP, and keep the streak alive.',
-      historyTitle: 'Activity History',
-      historyCopy: 'Recent completions tied to this skill.',
-      emptyHistory: 'No history yet for this skill. Complete an activity to start the log.',
       emptyList: 'No activities yet. Add one to start earning XP.',
       cooldown: '{minutes}m cooldown',
       fallbackDescription: 'Small repeatable action for this skill.',
       complete: 'Complete',
-      edit: 'Edit',
-      activityUpdatedTitle: 'Activity updated',
-      activityUpdatedMessage: 'The activity changes are now live.',
-      activityAddedTitle: 'Activity added',
-      activityAddedMessage: 'A new XP source has been added to this skill.',
-      activityDeletedTitle: 'Activity deleted',
-      activityDeletedMessage: 'The activity was removed from this skill.',
-      unableCompleteTitle: 'Unable to complete activity',
-      retryMessage: 'Please try again in a moment.'
+      edit: 'Edit'
     },
     forms: {
       skillName: 'Skill name',
@@ -100,18 +49,61 @@ const messages = {
       saveActivity: 'Save activity',
       buildProject: 'Build project'
     },
-    progress: {
-      ratio: '{current} / {required} XP'
-    },
     card: {
       defaultSkillDescription: 'Build momentum with repeatable activities and steady XP gains.'
     },
-    toasts: {
-      levelUp: 'Level up!',
-      xpEarned: 'XP earned',
-      leveledMessage: '{name} advanced to level {level}.',
-      earnedMessage: 'You earned {xp} XP.',
-      achievementUnlocked: 'Achievement unlocked'
+    achievements: {
+      title: 'Achievements',
+      subtitle: 'Badges, streaks, XP milestones, and mastery goals.',
+      unlockedCounter: '{unlocked} / {total} unlocked',
+      currentStreak: 'Current Streak',
+      bestStreak: 'Best Streak',
+      totalXp: 'Total XP',
+      completedActivities: 'Completed Activities',
+      sectionBeginner: 'Beginner',
+      sectionConsistency: 'Consistency',
+      sectionXp: 'XP Milestones',
+      sectionSkill: 'Skill Mastery',
+      sectionActivity: 'Activity Volume',
+      sectionExplorer: 'Explorer',
+      sectionProgress: '{done} / {total}',
+      firstActivityTitle: 'First Step',
+      firstActivityDescription: 'Complete your first activity.',
+      streak3Title: '3 Day Streak',
+      streak3Description: 'Complete activities for 3 consecutive days.',
+      streak7Title: '7 Day Streak',
+      streak7Description: 'Complete activities for 7 consecutive days.',
+      streak30Title: '30 Day Streak',
+      streak30Description: 'Complete activities for 30 consecutive days.',
+      xp100Title: '100 XP',
+      xp100Description: 'Earn 100 total XP.',
+      xp500Title: '500 XP',
+      xp500Description: 'Earn 500 total XP.',
+      xp1000Title: '1000 XP',
+      xp1000Description: 'Earn 1,000 total XP.',
+      xp5000Title: '5000 XP',
+      xp5000Description: 'Earn 5,000 total XP.',
+      skill5Title: 'Level 5 Skill',
+      skill5Description: 'Reach level 5 in any skill.',
+      skill10Title: 'Level 10 Skill',
+      skill10Description: 'Reach level 10 in any skill.',
+      skill20Title: 'Master a Skill',
+      skill20Description: 'Reach level 20 in any skill.',
+      activity10Title: '10 Activities',
+      activity10Description: 'Complete 10 activities.',
+      activity50Title: '50 Activities',
+      activity50Description: 'Complete 50 activities.',
+      activity100Title: '100 Activities',
+      activity100Description: 'Complete 100 activities.',
+      skills3Title: 'Explorer 3',
+      skills3Description: 'Create 3 skills.',
+      skills5Title: 'Explorer 5',
+      skills5Description: 'Create 5 skills.',
+      skills10Title: 'Explorer 10',
+      skills10Description: 'Create 10 skills.'
+    },
+    progress: {
+      ratio: '{current} / {required} XP'
     }
   },
   fa: {
@@ -119,9 +111,12 @@ const messages = {
       subtitle: 'پیشرفت واقعی زندگی را به یک مسیر پایدار شبیه RPG تبدیل کن.',
       dashboard: 'داشبورد',
       skills: 'مهارت‌ها',
+      achievements: 'دستاوردها',
       english: 'English',
       persian: 'فارسی',
-      close: 'بستن'
+      close: 'بستن',
+      themeDark: 'تیره',
+      themeLight: 'روشن'
     },
     common: {
       xp: 'XP',
@@ -130,73 +125,19 @@ const messages = {
       activities: 'فعالیت',
       skill: 'مهارت',
       notFound: 'مهارت پیدا نشد.',
-      optional: 'اختیاری'
-    },
-    dashboard: {
-      yourSkills: 'مهارت‌های شما',
-      tracksCopy: 'دسترسی سریع به مسیرهای رشد فعال شما.',
-      newSkill: 'مهارت جدید',
-      noSkills: 'هنوز مهارتی نداری. اولین مهارت را بساز تا حلقه پیشرفت شروع شود.',
-      activityLog: 'گزارش فعالیت امروز',
-      activityLogCopy: 'اقدام‌های اخیر و XP که تولید کرده‌اند.',
-      noActivityLogs: 'برای شروع گزارش امروز، یک فعالیت را کامل کن.',
-      achievements: 'دستاوردها',
-      achievementsCopy: 'نقاط عطفی که با رشد سیستم باز می‌شوند.',
-      noAchievements: 'با تکمیل فعالیت‌ها و رسیدن به نقاط عطف، دستاوردها نمایش داده می‌شوند.'
-    },
-    stats: {
-      totalXp: 'XP کل',
-      totalXpCopy: 'هر فعالیت کامل‌شده حساب شما را جلو می‌برد.',
-      userLevel: 'سطح کاربر',
-      userLevelCopy: 'نمایی کلی از مومنتوم فعلی شما در همه مهارت‌ها.',
-      skills: 'مهارت‌ها',
-      skillsCopy: 'حوزه‌هایی که به‌صورت فعال روی آن‌ها رشد می‌کنید.',
-      completedToday: 'تکمیل‌شده امروز',
-      completedTodayCopy: 'یک نگاه سریع به ثبات عملکرد امروز.'
+      optional: 'اختیاری',
+      days: 'روز',
+      unlocked: 'بازشده'
     },
     skills: {
-      title: 'مهارت‌ها',
-      copy: 'مسیرهایی که رشدت را شکل می‌دهند بساز، ویرایش کن و بهینه کن.',
-      createSkill: 'ساخت مهارت',
-      updateSkill: 'به‌روزرسانی مهارت',
-      open: 'باز کردن',
-      delete: 'حذف',
-      emptyDescription: 'یک مسیر پایدار برای پیشرفت بلندمدت.',
-      createdTitle: 'مهارت ساخته شد',
-      createdMessage: '{name} آماده دریافت XP است.',
-      updatedTitle: 'مهارت به‌روزرسانی شد',
-      updatedMessage: 'جزئیات مهارت با موفقیت ذخیره شد.',
-      removedTitle: 'مهارت حذف شد',
-      removedMessage: 'مهارت و فعالیت‌های آن حذف شدند.',
-      createTitle: 'ساخت مهارت',
-      createCopy: 'یک حوزه جدید تعریف کن تا به‌مرور سطح بگیری.',
-      detailsLevelXp: 'سطح {level} - {xp} XP ذخیره‌شده'
+      delete: 'حذف'
     },
     activities: {
-      editActivity: 'ویرایش فعالیت',
-      addActivity: 'افزودن فعالیت',
-      formCopy: 'فعالیت‌ها اقدام‌های تکرارشونده‌ای هستند که XP تولید می‌کنند.',
-      updateActivity: 'به‌روزرسانی فعالیت',
-      addActivityButton: 'افزودن فعالیت',
-      cancelEditing: 'لغو ویرایش',
-      listTitle: 'فعالیت‌ها',
-      listCopy: 'کارها را کامل کن، XP بگیر و زنجیره را حفظ کن.',
-      historyTitle: 'تاریخچه فعالیت',
-      historyCopy: 'تکمیل‌های اخیر مرتبط با این مهارت.',
-      emptyHistory: 'هنوز تاریخچه‌ای برای این مهارت ثبت نشده است. یک فعالیت کامل کن.',
       emptyList: 'هنوز فعالیتی ثبت نشده. یکی اضافه کن تا XP بگیری.',
       cooldown: 'کول‌داون {minutes} دقیقه',
       fallbackDescription: 'یک اقدام کوچک و تکرارشونده برای این مهارت.',
       complete: 'تکمیل',
-      edit: 'ویرایش',
-      activityUpdatedTitle: 'فعالیت به‌روزرسانی شد',
-      activityUpdatedMessage: 'تغییرات فعالیت اعمال شد.',
-      activityAddedTitle: 'فعالیت اضافه شد',
-      activityAddedMessage: 'یک منبع جدید XP به این مهارت اضافه شد.',
-      activityDeletedTitle: 'فعالیت حذف شد',
-      activityDeletedMessage: 'فعالیت از این مهارت حذف شد.',
-      unableCompleteTitle: 'تکمیل فعالیت ممکن نشد',
-      retryMessage: 'چند لحظه دیگر دوباره تلاش کن.'
+      edit: 'ویرایش'
     },
     forms: {
       skillName: 'نام مهارت',
@@ -213,18 +154,61 @@ const messages = {
       saveActivity: 'ذخیره فعالیت',
       buildProject: 'ساخت پروژه'
     },
-    progress: {
-      ratio: '{current} / {required} XP'
-    },
     card: {
       defaultSkillDescription: 'با فعالیت‌های تکرارشونده و XP پایدار مومنتوم بساز.'
     },
-    toasts: {
-      levelUp: 'ارتقای سطح!',
-      xpEarned: 'XP دریافت شد',
-      leveledMessage: '{name} به سطح {level} رسید.',
-      earnedMessage: '{xp} XP دریافت کردی.',
-      achievementUnlocked: 'دستاورد باز شد'
+    achievements: {
+      title: 'دستاوردها',
+      subtitle: 'نشان‌ها، استریک، نقاط عطف XP و هدف‌های استادی.',
+      unlockedCounter: '{unlocked} / {total} بازشده',
+      currentStreak: 'استریک فعلی',
+      bestStreak: 'بهترین استریک',
+      totalXp: 'XP کل',
+      completedActivities: 'فعالیت‌های تکمیل‌شده',
+      sectionBeginner: 'شروع',
+      sectionConsistency: 'پیوستگی',
+      sectionXp: 'نقاط عطف XP',
+      sectionSkill: 'استادی مهارت',
+      sectionActivity: 'حجم فعالیت',
+      sectionExplorer: 'کاوشگر',
+      sectionProgress: '{done} / {total}',
+      firstActivityTitle: 'اولین قدم',
+      firstActivityDescription: 'اولین فعالیت خودت را تکمیل کن.',
+      streak3Title: 'استریک ۳ روزه',
+      streak3Description: '۳ روز پیاپی فعالیت تکمیل کن.',
+      streak7Title: 'استریک ۷ روزه',
+      streak7Description: '۷ روز پیاپی فعالیت تکمیل کن.',
+      streak30Title: 'استریک ۳۰ روزه',
+      streak30Description: '۳۰ روز پیاپی فعالیت تکمیل کن.',
+      xp100Title: '۱۰۰ XP',
+      xp100Description: 'مجموعا ۱۰۰ XP کسب کن.',
+      xp500Title: '۵۰۰ XP',
+      xp500Description: 'مجموعا ۵۰۰ XP کسب کن.',
+      xp1000Title: '۱۰۰۰ XP',
+      xp1000Description: 'مجموعا ۱۰۰۰ XP کسب کن.',
+      xp5000Title: '۵۰۰۰ XP',
+      xp5000Description: 'مجموعا ۵۰۰۰ XP کسب کن.',
+      skill5Title: 'مهارت سطح ۵',
+      skill5Description: 'به سطح ۵ در یکی از مهارت‌ها برس.',
+      skill10Title: 'مهارت سطح ۱۰',
+      skill10Description: 'به سطح ۱۰ در یکی از مهارت‌ها برس.',
+      skill20Title: 'استاد یک مهارت',
+      skill20Description: 'به سطح ۲۰ در یکی از مهارت‌ها برس.',
+      activity10Title: '۱۰ فعالیت',
+      activity10Description: '۱۰ فعالیت را کامل کن.',
+      activity50Title: '۵۰ فعالیت',
+      activity50Description: '۵۰ فعالیت را کامل کن.',
+      activity100Title: '۱۰۰ فعالیت',
+      activity100Description: '۱۰۰ فعالیت را کامل کن.',
+      skills3Title: 'کاوشگر ۳',
+      skills3Description: '۳ مهارت بساز.',
+      skills5Title: 'کاوشگر ۵',
+      skills5Description: '۵ مهارت بساز.',
+      skills10Title: 'کاوشگر ۱۰',
+      skills10Description: '۱۰ مهارت بساز.'
+    },
+    progress: {
+      ratio: '{current} / {required} XP'
     }
   }
 } as const
@@ -240,7 +224,6 @@ const resolveMessage = (locale: Locale, key: MessageKey): string => {
     if (typeof current !== 'object' || current === null || !(chunk in current)) {
       return key
     }
-
     current = (current as Record<string, unknown>)[chunk]
   }
 
@@ -251,14 +234,11 @@ const formatTemplate = (template: string, params?: MessageParams): string => {
   if (!params) {
     return template
   }
-
   return template.replaceAll(/\{(\w+)\}/g, (_match, token: string) => String(params[token] ?? `{${token}}`))
 }
 
 export const useI18n = () => {
-  const localeCookie = useCookie<Locale>('locale', {
-    default: () => 'en'
-  })
+  const localeCookie = useCookie<Locale>('locale', { default: () => 'en' })
   const locale = useState<Locale>('locale', () => localeCookie.value ?? 'en')
 
   watch(
@@ -276,8 +256,7 @@ export const useI18n = () => {
     return formatTemplate(template, params)
   }
 
-  const n = (value: number) =>
-    new Intl.NumberFormat(locale.value === 'fa' ? 'fa-IR' : 'en-US').format(value)
+  const n = (value: number) => new Intl.NumberFormat(locale.value === 'fa' ? 'fa-IR' : 'en-US').format(value)
 
   const d = (value: string | Date) =>
     new Intl.DateTimeFormat(locale.value === 'fa' ? 'fa-IR' : 'en-US', {
@@ -289,12 +268,5 @@ export const useI18n = () => {
     locale.value = value
   }
 
-  return {
-    locale,
-    isRtl,
-    t,
-    n,
-    d,
-    setLocale
-  }
+  return { locale, isRtl, t, n, d, setLocale }
 }

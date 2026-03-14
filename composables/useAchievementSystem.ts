@@ -1,144 +1,144 @@
 import type { AchievementProgress, ActivityLog, Skill, UserAchievement } from '~/types'
 import type { Ref } from 'vue'
 
-const ACHIEVEMENT_DEFINITIONS: Omit<AchievementProgress, 'current' | 'progress' | 'unlocked' | 'unlockedAt'>[] = [
+const ACHIEVEMENT_DEFINITIONS = [
   {
     key: 'first_activity',
-    title: 'First Step',
-    description: 'Complete your first activity.',
+    titleKey: 'achievements.firstActivityTitle',
+    descriptionKey: 'achievements.firstActivityDescription',
     icon: 'FS',
     category: 'beginner',
     target: 1
   },
   {
     key: 'streak_3',
-    title: '3 Day Streak',
-    description: 'Complete activities for 3 consecutive days.',
+    titleKey: 'achievements.streak3Title',
+    descriptionKey: 'achievements.streak3Description',
     icon: 'S3',
     category: 'consistency',
     target: 3
   },
   {
     key: 'streak_7',
-    title: '7 Day Streak',
-    description: 'Complete activities for 7 consecutive days.',
+    titleKey: 'achievements.streak7Title',
+    descriptionKey: 'achievements.streak7Description',
     icon: 'S7',
     category: 'consistency',
     target: 7
   },
   {
     key: 'streak_30',
-    title: '30 Day Streak',
-    description: 'Complete activities for 30 consecutive days.',
+    titleKey: 'achievements.streak30Title',
+    descriptionKey: 'achievements.streak30Description',
     icon: 'S30',
     category: 'consistency',
     target: 30
   },
   {
     key: 'xp_100',
-    title: '100 XP',
-    description: 'Earn 100 total XP.',
+    titleKey: 'achievements.xp100Title',
+    descriptionKey: 'achievements.xp100Description',
     icon: 'X1',
     category: 'xp',
     target: 100
   },
   {
     key: 'earn_500_xp',
-    title: '500 XP',
-    description: 'Earn 500 total XP.',
+    titleKey: 'achievements.xp500Title',
+    descriptionKey: 'achievements.xp500Description',
     icon: 'X5',
     category: 'xp',
     target: 500
   },
   {
     key: 'xp_1000',
-    title: '1000 XP',
-    description: 'Earn 1,000 total XP.',
+    titleKey: 'achievements.xp1000Title',
+    descriptionKey: 'achievements.xp1000Description',
     icon: 'X10',
     category: 'xp',
     target: 1000
   },
   {
     key: 'xp_5000',
-    title: '5000 XP',
-    description: 'Earn 5,000 total XP.',
+    titleKey: 'achievements.xp5000Title',
+    descriptionKey: 'achievements.xp5000Description',
     icon: 'X50',
     category: 'xp',
     target: 5000
   },
   {
     key: 'skill_level_5',
-    title: 'Level 5 Skill',
-    description: 'Reach level 5 in any skill.',
+    titleKey: 'achievements.skill5Title',
+    descriptionKey: 'achievements.skill5Description',
     icon: 'L5',
     category: 'skill',
     target: 5
   },
   {
     key: 'skill_level_10',
-    title: 'Level 10 Skill',
-    description: 'Reach level 10 in any skill.',
+    titleKey: 'achievements.skill10Title',
+    descriptionKey: 'achievements.skill10Description',
     icon: 'L10',
     category: 'skill',
     target: 10
   },
   {
     key: 'master_skill_20',
-    title: 'Master a Skill',
-    description: 'Reach level 20 in any skill.',
+    titleKey: 'achievements.skill20Title',
+    descriptionKey: 'achievements.skill20Description',
     icon: 'M20',
     category: 'skill',
     target: 20
   },
   {
     key: 'activities_10',
-    title: '10 Activities',
-    description: 'Complete 10 activities.',
+    titleKey: 'achievements.activity10Title',
+    descriptionKey: 'achievements.activity10Description',
     icon: 'A10',
     category: 'activity',
     target: 10
   },
   {
     key: 'activities_50',
-    title: '50 Activities',
-    description: 'Complete 50 activities.',
+    titleKey: 'achievements.activity50Title',
+    descriptionKey: 'achievements.activity50Description',
     icon: 'A50',
     category: 'activity',
     target: 50
   },
   {
     key: 'activities_100',
-    title: '100 Activities',
-    description: 'Complete 100 activities.',
+    titleKey: 'achievements.activity100Title',
+    descriptionKey: 'achievements.activity100Description',
     icon: 'A100',
     category: 'activity',
     target: 100
   },
   {
     key: 'skills_3',
-    title: 'Explorer 3',
-    description: 'Create 3 skills.',
+    titleKey: 'achievements.skills3Title',
+    descriptionKey: 'achievements.skills3Description',
     icon: 'E3',
     category: 'explorer',
     target: 3
   },
   {
     key: 'skills_5',
-    title: 'Explorer 5',
-    description: 'Create 5 skills.',
+    titleKey: 'achievements.skills5Title',
+    descriptionKey: 'achievements.skills5Description',
     icon: 'E5',
     category: 'explorer',
     target: 5
   },
   {
     key: 'skills_10',
-    title: 'Explorer 10',
-    description: 'Create 10 skills.',
+    titleKey: 'achievements.skills10Title',
+    descriptionKey: 'achievements.skills10Description',
     icon: 'E10',
     category: 'explorer',
     target: 10
   }
-]
+] as const
 
 const toDayKey = (value: string) => {
   const date = new Date(value)
@@ -236,6 +236,7 @@ export const useAchievementSystem = (payload: {
   skills: Ref<Skill[]>
   totalXp: Ref<number>
 }) => {
+  const { t } = useI18n()
   const unlockedByKey = computed(() => {
     const map = new Map<string, UserAchievement>()
     for (const item of payload.achievements.value) {
@@ -265,7 +266,12 @@ export const useAchievementSystem = (payload: {
       const unlocked = Boolean(unlockedItem) || current >= definition.target
 
       return {
-        ...definition,
+        key: definition.key,
+        title: t(definition.titleKey),
+        description: t(definition.descriptionKey),
+        icon: definition.icon,
+        category: definition.category,
+        target: definition.target,
         current,
         progress: Math.min(100, Math.round((Math.min(current, definition.target) / definition.target) * 100)),
         unlocked,

@@ -19,12 +19,34 @@
   --shadow: 0 24px 48px rgba(2, 6, 23, 0.42);
 }
 
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f1f5f9;
+  --bg-soft: #f8fafc;
+  --bg-elevated: #e2e8f0;
+  --card: rgba(255, 255, 255, 0.84);
+  --card-strong: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: rgba(100, 116, 139, 0.22);
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+}
+
 body {
   @apply min-h-screen antialiased;
   color: var(--text);
   background:
     radial-gradient(circle at top right, rgba(37, 99, 235, 0.22), transparent 34rem),
     radial-gradient(circle at top left, rgba(14, 165, 233, 0.1), transparent 32rem),
+    linear-gradient(180deg, var(--bg-soft), var(--bg));
+}
+
+[data-theme='light'] body {
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 34rem),
+    radial-gradient(circle at top left, rgba(14, 165, 233, 0.07), transparent 32rem),
     linear-gradient(180deg, var(--bg-soft), var(--bg));
 }
 
@@ -49,6 +71,14 @@ body {
 
 .section-copy {
   @apply text-sm text-slate-400;
+}
+
+[data-theme='light'] .section-title {
+  @apply text-slate-900;
+}
+
+[data-theme='light'] .section-copy {
+  @apply text-slate-600;
 }
 
 .soft-ring {
@@ -91,4 +121,39 @@ body {
 .xp-pop-leave-to {
   opacity: 0;
   transform: translateY(8px) scale(0.9);
+}
+
+[data-theme='light'] .text-slate-100 {
+  color: #0f172a !important;
+}
+
+[data-theme='light'] .text-slate-300 {
+  color: #334155 !important;
+}
+
+[data-theme='light'] .text-slate-400 {
+  color: #475569 !important;
+}
+
+[data-theme='light'] .text-slate-500 {
+  color: #64748b !important;
+}
+
+[data-theme='light'] .bg-slate-900\/95,
+[data-theme='light'] .bg-slate-900\/70,
+[data-theme='light'] .bg-slate-900\/50,
+[data-theme='light'] .bg-slate-900\/40,
+[data-theme='light'] .bg-slate-900 {
+  background-color: rgba(241, 245, 249, 0.88) !important;
+}
+
+[data-theme='light'] .bg-slate-800,
+[data-theme='light'] .bg-slate-800\/80 {
+  background-color: rgba(226, 232, 240, 0.9) !important;
+}
+
+[data-theme='light'] .border-slate-700,
+[data-theme='light'] .border-slate-700\/70,
+[data-theme='light'] .border-slate-700\/80 {
+  border-color: rgba(148, 163, 184, 0.45) !important;
 }

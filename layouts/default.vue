@@ -33,9 +33,26 @@
             class="rounded-xl px-4 py-2 text-slate-300 transition hover:bg-slate-800 hover:text-white"
             active-class="bg-blue-600 text-white shadow-sm"
           >
-            Achievements
+            {{ t('app.achievements') }}
           </NuxtLink>
         </nav>
+
+        <div class="flex items-center gap-1 rounded-2xl border border-slate-700 bg-slate-900/70 p-1 text-xs">
+          <button
+            class="rounded-xl px-3 py-2 transition"
+            :class="theme === 'dark' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'"
+            @click="setTheme('dark')"
+          >
+            {{ t('app.themeDark') }}
+          </button>
+          <button
+            class="rounded-xl px-3 py-2 transition"
+            :class="theme === 'light' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'"
+            @click="setTheme('light')"
+          >
+            {{ t('app.themeLight') }}
+          </button>
+        </div>
 
         <div class="flex items-center gap-1 rounded-2xl border border-slate-700 bg-slate-900/70 p-1 text-xs">
           <button
@@ -92,11 +109,13 @@
 <script setup lang="ts">
 const { toasts, remove } = useToast()
 const { locale, isRtl, t, setLocale } = useI18n()
+const { theme, setTheme } = useTheme()
 
 useHead(() => ({
   htmlAttrs: {
     lang: locale.value,
-    dir: isRtl.value ? 'rtl' : 'ltr'
+    dir: isRtl.value ? 'rtl' : 'ltr',
+    'data-theme': theme.value
   }
 }))
 </script>
