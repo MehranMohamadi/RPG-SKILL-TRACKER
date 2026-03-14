@@ -68,6 +68,7 @@ export interface AchievementProgress extends AchievementDefinition {
   progress: number
   unlocked: boolean
   unlockedAt?: string | null
+  image?: string
 }
 
 export interface DashboardStats {

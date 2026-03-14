@@ -92,6 +92,7 @@
               v-for="item in latestUnlocked"
               :key="item.key"
               :icon="item.icon"
+              :image="item.image"
               :title="item.title"
               :description="item.description"
               :unlocked="true"

@@ -140,6 +140,15 @@ const ACHIEVEMENT_DEFINITIONS = [
   }
 ] as const
 
+const categoryImageMap: Record<(typeof ACHIEVEMENT_DEFINITIONS)[number]['category'], string> = {
+  beginner: '/achievement-images/beginner.svg',
+  consistency: '/achievement-images/consistency.svg',
+  xp: '/achievement-images/xp.svg',
+  skill: '/achievement-images/skill.svg',
+  activity: '/achievement-images/activity.svg',
+  explorer: '/achievement-images/explorer.svg'
+}
+
 const toDayKey = (value: string) => {
   const date = new Date(value)
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
@@ -272,6 +281,7 @@ export const useAchievementSystem = (payload: {
         icon: definition.icon,
         category: definition.category,
         target: definition.target,
+        image: categoryImageMap[definition.category],
         current,
         progress: Math.min(100, Math.round((Math.min(current, definition.target) / definition.target) * 100)),
         unlocked,

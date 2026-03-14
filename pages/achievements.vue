@@ -51,6 +51,7 @@
           v-for="item in section.items"
           :key="item.key"
           :icon="item.icon"
+          :image="item.image"
           :title="item.title"
           :description="item.description"
           :unlocked="item.unlocked"

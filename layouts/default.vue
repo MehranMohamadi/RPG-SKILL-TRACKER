@@ -1,8 +1,9 @@
 <template>
   <div class="page-shell">
     <header
-      class="glass-card mb-6 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between"
+      class="glass-card sticky top-3 z-40 mb-6 flex flex-col gap-4 p-4 sm:p-5"
     >
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <NuxtLink to="/dashboard" class="text-2xl font-semibold tracking-tight text-slate-100">
           SkillXP
@@ -13,7 +14,7 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
-        <nav class="flex items-center gap-2 rounded-2xl bg-slate-900/70 p-1 text-sm">
+        <nav class="flex flex-wrap items-center gap-2 rounded-2xl bg-slate-900/70 p-1 text-sm">
           <NuxtLink
             to="/dashboard"
             class="rounded-xl px-4 py-2 text-slate-300 transition hover:bg-slate-800 hover:text-white"
@@ -70,6 +71,7 @@
             {{ t('app.persian') }}
           </button>
         </div>
+      </div>
       </div>
     </header>
 

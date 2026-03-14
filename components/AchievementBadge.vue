@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-2xl border p-4 transition-all duration-300"
+    class="rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-0.5"
     :class="
       unlocked
         ? 'border-blue-400/40 bg-blue-500/10 shadow-[0_8px_28px_rgba(37,99,235,0.25)]'
@@ -9,10 +9,17 @@
   >
     <div class="flex items-start gap-3">
       <div
-        class="flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-bold"
+        class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl text-sm font-bold"
         :class="unlocked ? 'bg-blue-500/20 text-blue-200' : 'bg-slate-800 text-slate-300'"
       >
-        {{ icon }}
+        <img
+          v-if="image"
+          :src="image"
+          :alt="title"
+          class="h-full w-full object-cover"
+          loading="lazy"
+        >
+        <span v-else>{{ icon }}</span>
       </div>
       <div class="flex-1">
         <div class="mb-1 flex items-center justify-between gap-3">
@@ -47,6 +54,7 @@
 withDefaults(
   defineProps<{
     icon: string
+    image?: string
     title: string
     description: string
     unlocked?: boolean
@@ -56,6 +64,7 @@ withDefaults(
     unlockedAt?: string | null
   }>(),
   {
+    image: '',
     unlocked: false,
     progress: 0,
     current: 0,
