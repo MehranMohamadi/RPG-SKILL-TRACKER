@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String?
+  skills       Skill[]
+  activityLogs ActivityLog[]
+  achievements UserAchievement[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Skill {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  icon        String
+  color       String
+  description String?
+  level       Int        @default(1)
+  xp          Int        @default(0)
+  xpToNextLevel Int      @default(100)
+  activities  Activity[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Activity {
+  id           String        @id @default(cuid())
+  skillId      String
+  skill        Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  name         String
+  description  String?
+  xpReward     Int
+  cooldown     Int?
+  activityLogs ActivityLog[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([skillId])
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String
+  activityId  String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  xpEarned    Int
+  completedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([activityId])
+  @@index([completedAt])
+}
+
+model Achievement {
+  id               String            @id @default(cuid())
+  key              String            @unique
+  title            String
+  description      String
+  icon             String
+  xpReward         Int               @default(0)
+  userAchievements UserAchievement[]
+  createdAt        DateTime          @default(now())
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@index([achievementId])
+}

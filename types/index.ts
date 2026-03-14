@@ -1,0 +1,85 @@
+export interface Skill {
+  id: string
+  userId: string
+  name: string
+  icon: string
+  color: string
+  description: string | null
+  level: number
+  xp: number
+  xpToNextLevel: number
+  createdAt: string
+  updatedAt: string
+  activities?: Activity[]
+}
+
+export interface Activity {
+  id: string
+  skillId: string
+  name: string
+  description: string | null
+  xpReward: number
+  cooldown: number | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ActivityLog {
+  id: string
+  userId: string
+  activityId: string
+  xpEarned: number
+  completedAt: string
+  createdAt: string
+  activity?: Activity & {
+    skill?: Skill
+  }
+}
+
+export interface Achievement {
+  id: string
+  key: string
+  title: string
+  description: string
+  icon: string
+  xpReward: number
+  createdAt: string
+}
+
+export interface UserAchievement {
+  id: string
+  userId: string
+  achievementId: string
+  unlockedAt: string
+  achievement: Achievement
+}
+
+export interface AchievementDefinition {
+  key: string
+  title: string
+  description: string
+  icon: string
+  category: 'beginner' | 'consistency' | 'xp' | 'skill' | 'activity' | 'explorer'
+  target: number
+}
+
+export interface AchievementProgress extends AchievementDefinition {
+  current: number
+  progress: number
+  unlocked: boolean
+  unlockedAt?: string | null
+}
+
+export interface DashboardStats {
+  totalXp: number
+  userLevel: number
+  skillsCount: number
+  activitiesCompletedToday: number
+}
+
+export interface CompleteActivityResponse {
+  skill: Skill
+  activityLog: ActivityLog
+  leveledUp: boolean
+  unlockedAchievements: UserAchievement[]
+}
