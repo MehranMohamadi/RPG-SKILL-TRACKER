@@ -133,6 +133,10 @@ a:focus-visible {
   color: #0f172a !important;
 }
 
+[data-theme='light'] .text-slate-200 {
+  color: #1e293b !important;
+}
+
 [data-theme='light'] .text-slate-300 {
   color: #334155 !important;
 }
@@ -143,6 +147,22 @@ a:focus-visible {
 
 [data-theme='light'] .text-slate-500 {
   color: #64748b !important;
+}
+
+[data-theme='light'] .text-blue-200 {
+  color: #1d4ed8 !important;
+}
+
+[data-theme='light'] .text-emerald-300 {
+  color: #047857 !important;
+}
+
+[data-theme='light'] .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+[data-theme='light'] .hover\:text-slate-200:hover {
+  color: #0f172a !important;
 }
 
 [data-theme='light'] .bg-slate-900\/95,

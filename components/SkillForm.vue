@@ -139,6 +139,14 @@ const form = reactive({
   description: props.initialValue.description ?? ''
 })
 
+const resetForm = () => {
+  form.name = ''
+  form.icon = 'star'
+  form.color = '#4f46e5'
+  form.description = ''
+  showIconModal.value = false
+}
+
 const selectedIconName = computed<SkillIconName>(() =>
   isSkillIconName(form.icon) ? form.icon : 'star'
 )
@@ -172,5 +180,7 @@ const submit = () => {
     color: form.color,
     description: form.description.trim() || null
   })
+
+  resetForm()
 }
 </script>

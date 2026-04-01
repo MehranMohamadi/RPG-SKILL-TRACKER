@@ -146,6 +146,14 @@ const form = reactive({
   }))
 })
 
+const resetForm = () => {
+  form.name = ''
+  form.xpReward = 10
+  form.cooldown = null
+  form.description = ''
+  form.subActivities = []
+}
+
 const buttonLabel = computed(() => props.submitLabel ?? t('forms.saveActivity'))
 const subActivitiesLabel = computed(() => (locale.value === 'fa' ? 'زیر اکتیویتی‌ها' : 'Sub activities'))
 const subActivitiesHint = computed(() =>
@@ -197,5 +205,7 @@ const submit = () => {
       }))
       .filter((item) => item.name.length > 0)
   })
+
+  resetForm()
 }
 </script>
