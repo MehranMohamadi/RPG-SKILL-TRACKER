@@ -46,6 +46,7 @@ model Activity {
   description  String?
   xpReward     Int
   cooldown     Int?
+  subActivities SubActivity[]
   activityLogs ActivityLog[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -53,18 +54,35 @@ model Activity {
   @@index([skillId])
 }
 
+model SubActivity {
+  id           String        @id @default(cuid())
+  activityId    String
+  activity      Activity      @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  name          String
+  xpReward      Int           @default(10)
+  sortOrder     Int           @default(0)
+  activityLogs  ActivityLog[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([activityId])
+}
+
 model ActivityLog {
   id          String   @id @default(cuid())
   userId      String
   activityId  String
+  subActivityId String?
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  subActivity SubActivity? @relation(fields: [subActivityId], references: [id], onDelete: SetNull)
   xpEarned    Int
   completedAt DateTime @default(now())
   createdAt   DateTime @default(now())
 
   @@index([userId])
   @@index([activityId])
+  @@index([subActivityId])
   @@index([completedAt])
 }
 

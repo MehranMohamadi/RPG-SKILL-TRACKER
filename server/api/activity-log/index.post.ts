@@ -7,40 +7,81 @@ export default defineEventHandler(async (event) => {
   const user = await ensureDemoUser()
   const body = await readBody<{
     activityId?: string
+    subActivityId?: string
   }>(event)
 
-  if (!body.activityId) {
+  if (!body.activityId && !body.subActivityId) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Activity id is required.'
+      statusMessage: 'Activity id or sub-activity id is required.'
     })
   }
 
   return prisma.$transaction(async (tx) => {
-    const activity = await tx.activity.findFirst({
-      where: {
-        id: body.activityId,
-        skill: {
-          userId: user.id
-        }
-      },
-      include: {
-        skill: true
-      }
-    })
+    const subActivity = body.subActivityId
+      ? await tx.subActivity.findFirst({
+          where: {
+            id: body.subActivityId,
+            activity: {
+              skill: {
+                userId: user.id
+              }
+            }
+          },
+          include: {
+            activity: {
+              include: {
+                skill: true,
+                subActivities: {
+                  orderBy: {
+                    sortOrder: 'asc'
+                  }
+                }
+              }
+            }
+          }
+        })
+      : null
+
+    const activity = subActivity
+      ? subActivity.activity
+      : await tx.activity.findFirst({
+          where: {
+            id: body.activityId,
+            skill: {
+              userId: user.id
+            }
+          },
+          include: {
+            skill: true,
+            subActivities: {
+              orderBy: {
+                sortOrder: 'asc'
+              }
+            }
+          }
+        })
 
     if (!activity) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'Activity not found.'
+        statusMessage: body.subActivityId ? 'Sub-activity not found.' : 'Activity not found.'
       })
     }
 
-    if (activity.cooldown) {
+    if (!subActivity && activity.subActivities.length > 0) {
+      throw createError({
+        statusCode: 409,
+        statusMessage: 'Complete one of the sub-activities for this activity.'
+      })
+    }
+
+    if (!subActivity && activity.cooldown) {
       const latestLog = await tx.activityLog.findFirst({
         where: {
           userId: user.id,
-          activityId: activity.id
+          activityId: activity.id,
+          subActivityId: null
         },
         orderBy: {
           completedAt: 'desc'
@@ -59,7 +100,8 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const nextSkillState = applyXpGain(activity.skill.level, activity.skill.xp, activity.xpReward)
+    const xpEarned = subActivity?.xpReward ?? activity.xpReward
+    const nextSkillState = applyXpGain(activity.skill.level, activity.skill.xp, xpEarned)
 
     const updatedSkill = await tx.skill.update({
       where: {
@@ -76,14 +118,21 @@ export default defineEventHandler(async (event) => {
       data: {
         userId: user.id,
         activityId: activity.id,
-        xpEarned: activity.xpReward
+        subActivityId: subActivity?.id ?? null,
+        xpEarned
       },
       include: {
         activity: {
           include: {
+            subActivities: {
+              orderBy: {
+                sortOrder: 'asc'
+              }
+            },
             skill: true
           }
-        }
+        },
+        subActivity: true
       }
     })
 

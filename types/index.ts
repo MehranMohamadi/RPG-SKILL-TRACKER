@@ -20,6 +20,17 @@ export interface Activity {
   description: string | null
   xpReward: number
   cooldown: number | null
+  subActivities: SubActivity[]
+  createdAt: string
+  updatedAt: string
+}
+
+export interface SubActivity {
+  id: string
+  activityId: string
+  name: string
+  xpReward: number
+  sortOrder: number
   createdAt: string
   updatedAt: string
 }
@@ -28,12 +39,14 @@ export interface ActivityLog {
   id: string
   userId: string
   activityId: string
+  subActivityId: string | null
   xpEarned: number
   completedAt: string
   createdAt: string
   activity?: Activity & {
     skill?: Skill
   }
+  subActivity?: SubActivity | null
 }
 
 export interface Achievement {

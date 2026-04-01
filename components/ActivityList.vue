@@ -26,7 +26,7 @@ defineProps<{
 const { t } = useI18n()
 
 defineEmits<{
-  complete: [activityId: string]
+  complete: [payload: { activityId?: string; subActivityId?: string }]
   edit: [activity: Activity]
   delete: [activityId: string]
 }>()

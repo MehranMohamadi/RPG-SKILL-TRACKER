@@ -25,15 +25,13 @@ export const useXpStore = defineStore('xp', {
       this.activityLogs = activityLogs
       this.achievements = achievements
     },
-    async completeActivity(activityId: string) {
+    async completeActivity(payload: { activityId?: string; subActivityId?: string }) {
       this.loading = true
 
       try {
         const response = await $fetch<CompleteActivityResponse>('/api/activity-log', {
           method: 'POST',
-          body: {
-            activityId
-          }
+          body: payload
         })
 
         const skillsStore = useSkillsStore()

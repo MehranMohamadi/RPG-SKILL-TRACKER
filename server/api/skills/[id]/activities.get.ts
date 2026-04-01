@@ -30,6 +30,13 @@ export default defineEventHandler(async (event) => {
     where: {
       skillId: skill.id
     },
+    include: {
+      subActivities: {
+        orderBy: {
+          sortOrder: 'asc'
+        }
+      }
+    },
     orderBy: {
       createdAt: 'desc'
     }

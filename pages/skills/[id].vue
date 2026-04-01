@@ -96,10 +96,10 @@
           <div class="flex items-center justify-between gap-3">
             <div>
               <p class="font-medium text-slate-100">
-                {{ log.activity?.name }}
+                {{ log.subActivity?.name ?? log.activity?.name }}
               </p>
               <p class="text-sm text-slate-400">
-                {{ d(log.completedAt) }}
+                {{ log.subActivity ? `${log.activity?.name} - ${d(log.completedAt)}` : d(log.completedAt) }}
               </p>
             </div>
             <span class="rounded-full bg-emerald-500/20 px-3 py-1 text-sm font-semibold text-emerald-300">
@@ -141,7 +141,11 @@ const activityDraft = reactive({
   name: '',
   xpReward: 10,
   cooldown: null as number | null,
-  description: ''
+  description: '',
+  subActivities: [] as Array<{
+    name: string
+    xpReward: number
+  }>
 })
 const animateProgress = ref(false)
 const showConfetti = ref(false)
@@ -162,7 +166,8 @@ const activityFormValue = computed(() => ({
   name: activityDraft.name,
   xpReward: activityDraft.xpReward,
   cooldown: activityDraft.cooldown,
-  description: activityDraft.description
+  description: activityDraft.description,
+  subActivities: activityDraft.subActivities
 }))
 
 const updateSkill = async (payload: {
@@ -189,6 +194,7 @@ const resetActivityForm = () => {
   activityDraft.xpReward = 10
   activityDraft.cooldown = null
   activityDraft.description = ''
+  activityDraft.subActivities = []
 }
 
 const startEdit = (activity: Activity) => {
@@ -197,6 +203,10 @@ const startEdit = (activity: Activity) => {
   activityDraft.xpReward = activity.xpReward
   activityDraft.cooldown = activity.cooldown
   activityDraft.description = activity.description ?? ''
+  activityDraft.subActivities = activity.subActivities.map((item) => ({
+    name: item.name,
+    xpReward: item.xpReward
+  }))
 }
 
 const submitActivity = async (payload: {
@@ -204,6 +214,10 @@ const submitActivity = async (payload: {
   xpReward: number
   cooldown?: number | null
   description?: string | null
+  subActivities?: Array<{
+    name: string
+    xpReward: number
+  }>
 }) => {
   if (editingActivityId.value) {
     await activitiesStore.updateActivity(editingActivityId.value, skillId.value, payload)
@@ -236,9 +250,9 @@ const removeActivity = async (id: string) => {
   })
 }
 
-const completeActivity = async (activityId: string) => {
+const completeActivity = async (payload: { activityId?: string; subActivityId?: string }) => {
   try {
-    const response = await xpStore.completeActivity(activityId)
+    const response = await xpStore.completeActivity(payload)
     highlightSkillId.value = skillId.value
     animateProgress.value = false
 

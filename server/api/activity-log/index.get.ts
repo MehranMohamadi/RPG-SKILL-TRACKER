@@ -12,9 +12,15 @@ export default defineEventHandler(async (event) => {
     include: {
       activity: {
         include: {
+          subActivities: {
+            orderBy: {
+              sortOrder: 'asc'
+            }
+          },
           skill: true
         }
-      }
+      },
+      subActivity: true
     },
     orderBy: {
       completedAt: 'desc'

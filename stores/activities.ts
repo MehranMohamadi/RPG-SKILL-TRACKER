@@ -7,6 +7,10 @@ type ActivityPayload = {
   description?: string | null
   xpReward: number
   cooldown?: number | null
+  subActivities?: Array<{
+    name: string
+    xpReward: number
+  }>
 }
 
 export const useActivitiesStore = defineStore('activities', {

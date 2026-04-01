@@ -9,6 +9,10 @@ export default defineEventHandler(async (event) => {
     description?: string | null
     xpReward?: number
     cooldown?: number | null
+    subActivities?: Array<{
+      name?: string
+      xpReward?: number
+    }>
   }>(event)
 
   if (!body.skillId || !body.name || body.xpReward == null) {
@@ -32,13 +36,33 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const subActivities = (body.subActivities ?? [])
+    .map((item, index) => ({
+      name: item.name?.trim() ?? '',
+      xpReward: item.xpReward ?? 10,
+      sortOrder: index
+    }))
+    .filter((item) => item.name.length > 0)
+
   return prisma.activity.create({
     data: {
       skillId: body.skillId,
       name: body.name,
       description: body.description ?? null,
       xpReward: body.xpReward,
-      cooldown: body.cooldown ?? null
+      cooldown: body.cooldown ?? null,
+      subActivities: subActivities.length
+        ? {
+            create: subActivities
+          }
+        : undefined
+    },
+    include: {
+      subActivities: {
+        orderBy: {
+          sortOrder: 'asc'
+        }
+      }
     }
   })
 })

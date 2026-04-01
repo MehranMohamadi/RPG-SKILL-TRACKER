@@ -19,6 +19,36 @@
         <p class="text-sm text-slate-400">
           {{ activity.description || t('activities.fallbackDescription') }}
         </p>
+
+        <div
+          v-if="activity.subActivities.length > 0"
+          class="mt-4 space-y-2 rounded-2xl border border-slate-700/70 bg-slate-950/40 p-3"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-sm font-medium text-slate-200">{{ subActivitiesLabel }}</p>
+            <span class="text-xs text-slate-500">{{ activity.subActivities.length }} {{ itemsLabel }}</span>
+          </div>
+
+          <div
+            v-for="subActivity in activity.subActivities"
+            :key="subActivity.id"
+            class="flex items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 px-3 py-2"
+          >
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-100">
+                {{ subActivity.name }}
+              </p>
+              <p class="text-xs text-slate-400">+{{ n(subActivity.xpReward) }} XP</p>
+            </div>
+
+            <button
+              class="rounded-xl bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+              @click="completeSubActivity(subActivity.id)"
+            >
+              {{ t('activities.complete') }}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="relative flex flex-wrap gap-2">
@@ -27,11 +57,12 @@
             v-if="showXpPop"
             class="pointer-events-none absolute -top-7 right-0 rounded-full bg-emerald-500/20 px-2 py-1 text-xs font-semibold text-emerald-300"
           >
-            +{{ n(activity.xpReward) }} XP
+            +{{ n(xpPopValue) }} XP
           </div>
         </Transition>
 
         <button
+          v-if="activity.subActivities.length === 0"
           class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
           @click="complete"
         >
@@ -63,20 +94,40 @@ const props = defineProps<{
 const { activity } = toRefs(props)
 
 const emit = defineEmits<{
-  complete: [activityId: string]
+  complete: [payload: { activityId?: string; subActivityId?: string }]
   edit: [activity: Activity]
   delete: [activityId: string]
 }>()
 
-const { n, t } = useI18n()
+const { locale, n, t } = useI18n()
 const showXpPop = ref(false)
+const xpPopValue = ref(props.activity.xpReward)
+const subActivitiesLabel = computed(() => (locale.value === 'fa' ? 'زیر اکتیویتی‌ها' : 'Sub activities'))
+const itemsLabel = computed(() => (locale.value === 'fa' ? 'مورد' : 'items'))
 
 const complete = () => {
+  xpPopValue.value = props.activity.xpReward
   showXpPop.value = true
   setTimeout(() => {
     showXpPop.value = false
   }, 700)
 
-  emit('complete', props.activity.id)
+  emit('complete', {
+    activityId: props.activity.id
+  })
+}
+
+const completeSubActivity = (subActivityId: string) => {
+  const subActivity = props.activity.subActivities.find((item) => item.id === subActivityId)
+  xpPopValue.value = subActivity?.xpReward ?? 10
+  showXpPop.value = true
+  setTimeout(() => {
+    showXpPop.value = false
+  }, 700)
+
+  emit('complete', {
+    activityId: props.activity.id,
+    subActivityId
+  })
 }
 </script>
