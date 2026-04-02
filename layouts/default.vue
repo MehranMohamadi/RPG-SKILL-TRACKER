@@ -5,7 +5,7 @@
     >
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div class="min-w-0">
-          <NuxtLink to="/dashboard" class="text-xl font-semibold tracking-tight text-slate-100 sm:text-2xl">
+          <NuxtLink :to="isLandingPage ? '/' : '/dashboard'" class="text-xl font-semibold tracking-tight text-slate-100 sm:text-2xl">
             SkillXP
           </NuxtLink>
           <p class="section-copy mt-0.5 hidden text-xs sm:block">
@@ -16,6 +16,23 @@
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <nav class="flex flex-wrap items-center gap-1 rounded-xl bg-slate-900/60 p-0.5 text-xs sm:text-sm">
             <NuxtLink
+              v-if="isLandingPage"
+              to="/"
+              class="rounded-lg px-2.5 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800/90 hover:text-white sm:px-3"
+              active-class="bg-blue-600 text-white shadow-sm"
+            >
+              {{ locale === 'fa' ? 'خانه' : 'Home' }}
+            </NuxtLink>
+            <NuxtLink
+              v-if="isLandingPage"
+              to="/dashboard"
+              class="rounded-lg px-2.5 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800/90 hover:text-white sm:px-3"
+              active-class="bg-blue-600 text-white shadow-sm"
+            >
+              {{ t('app.dashboard') }}
+            </NuxtLink>
+            <NuxtLink
+              v-if="!isLandingPage"
               to="/dashboard"
               class="rounded-lg px-2.5 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800/90 hover:text-white sm:px-3"
               active-class="bg-blue-600 text-white shadow-sm"
@@ -91,8 +108,10 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute()
 const { toasts, remove } = useToast()
 const { locale, isRtl, t, setLocale } = useI18n()
+const isLandingPage = computed(() => route.path === '/')
 
 const toggleLocale = () => {
   setLocale(locale.value === 'en' ? 'fa' : 'en')

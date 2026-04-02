@@ -150,11 +150,27 @@ const activityDraft = reactive({
 const animateProgress = ref(false)
 const showConfetti = ref(false)
 
-await Promise.all([
-  skillsStore.fetchSkills(),
-  activitiesStore.fetchBySkill(skillId.value),
-  xpStore.fetchDashboard()
-])
+if (!skillsStore.skills.length) {
+  void skillsStore.fetchSkills()
+}
+
+if (!activitiesStore.itemsBySkill[skillId.value]) {
+  void activitiesStore.fetchBySkill(skillId.value)
+}
+
+if (!xpStore.stats && xpStore.activityLogs.length === 0 && xpStore.achievements.length === 0) {
+  void xpStore.fetchDashboard()
+}
+
+watch(
+  skillId,
+  (id) => {
+    if (!activitiesStore.itemsBySkill[id]) {
+      void activitiesStore.fetchBySkill(id)
+    }
+  },
+  { immediate: false }
+)
 
 const skill = computed(() => skillsStore.byId(skillId.value))
 const activities = computed(() => activitiesStore.forSkill(skillId.value))

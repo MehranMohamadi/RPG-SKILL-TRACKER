@@ -68,7 +68,9 @@ import { isSkillIconName } from '~/composables/useSkillIcons'
 const skillsStore = useSkillsStore()
 const { push } = useToast()
 
-await skillsStore.fetchSkills()
+if (!skillsStore.skills.length) {
+  void skillsStore.fetchSkills()
+}
 
 const remove = async (id: string) => {
   await skillsStore.deleteSkill(id)

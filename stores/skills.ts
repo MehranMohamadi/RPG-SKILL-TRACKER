@@ -7,23 +7,45 @@ type SkillPayload = {
   description?: string | null
 }
 
+let skillsPendingRequest: Promise<Skill[]> | null = null
+
 export const useSkillsStore = defineStore('skills', {
   state: () => ({
     skills: [] as Skill[],
-    loading: false
+    loading: false,
+    loadedAt: 0
   }),
   getters: {
     byId: (state) => (id: string) => state.skills.find((skill) => skill.id === id)
   },
   actions: {
-    async fetchSkills() {
+    async fetchSkills(options?: { force?: boolean }) {
+      const force = options?.force ?? false
+      const hasCachedSkills = this.skills.length > 0
+
+      if (!force && hasCachedSkills) {
+        return this.skills
+      }
+
+      if (!force && skillsPendingRequest) {
+        return skillsPendingRequest
+      }
+
       this.loading = true
 
-      try {
-        this.skills = await $fetch<Skill[]>('/api/skills')
-      } finally {
-        this.loading = false
-      }
+      const request = $fetch<Skill[]>('/api/skills')
+        .then((skills) => {
+          this.skills = skills
+          this.loadedAt = Date.now()
+          return skills
+        })
+        .finally(() => {
+          this.loading = false
+          skillsPendingRequest = null
+        })
+
+      skillsPendingRequest = request
+      return request
     },
     async createSkill(payload: SkillPayload) {
       const skill = await $fetch<Skill>('/api/skills', {

@@ -70,7 +70,13 @@ const xpStore = useXpStore()
 const skillsStore = useSkillsStore()
 const { n, t } = useI18n()
 
-await Promise.all([skillsStore.fetchSkills(), xpStore.fetchDashboard()])
+if (!skillsStore.skills.length) {
+  void skillsStore.fetchSkills()
+}
+
+if (!xpStore.stats && xpStore.activityLogs.length === 0 && xpStore.achievements.length === 0) {
+  void xpStore.fetchDashboard()
+}
 
 const { categories, progress, streak } = useAchievementSystem({
   achievements: computed(() => xpStore.achievements),

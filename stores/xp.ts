@@ -6,24 +6,46 @@ import type {
 } from '~/types'
 import { useSkillsStore } from './skills'
 
+let dashboardPendingRequest: Promise<void> | null = null
+
 export const useXpStore = defineStore('xp', {
   state: () => ({
     stats: null as DashboardStats | null,
     activityLogs: [] as ActivityLog[],
     achievements: [] as UserAchievement[],
-    loading: false
+    loading: false,
+    loadedAt: 0
   }),
   actions: {
-    async fetchDashboard() {
-      const [stats, activityLogs, achievements] = await Promise.all([
+    async fetchDashboard(options?: { force?: boolean }) {
+      const force = options?.force ?? false
+      const hasCachedDashboard = this.stats !== null || this.activityLogs.length > 0 || this.achievements.length > 0
+
+      if (!force && hasCachedDashboard) {
+        return
+      }
+
+      if (!force && dashboardPendingRequest) {
+        return dashboardPendingRequest
+      }
+
+      const request = Promise.all([
         $fetch<DashboardStats>('/api/dashboard'),
         $fetch<ActivityLog[]>('/api/activity-log'),
         $fetch<UserAchievement[]>('/api/achievements')
       ])
+        .then(([stats, activityLogs, achievements]) => {
+          this.stats = stats
+          this.activityLogs = activityLogs
+          this.achievements = achievements
+          this.loadedAt = Date.now()
+        })
+        .finally(() => {
+          dashboardPendingRequest = null
+        })
 
-      this.stats = stats
-      this.activityLogs = activityLogs
-      this.achievements = achievements
+      dashboardPendingRequest = request
+      return request
     },
     async completeActivity(payload: { activityId?: string; subActivityId?: string }) {
       this.loading = true
@@ -42,7 +64,7 @@ export const useXpStore = defineStore('xp', {
           this.achievements = [...response.unlockedAchievements, ...this.achievements]
         }
 
-        await this.fetchDashboard()
+        await this.fetchDashboard({ force: true })
         return response
       } finally {
         this.loading = false

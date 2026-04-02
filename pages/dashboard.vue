@@ -121,7 +121,13 @@ const xpStore = useXpStore()
 const { d, n, t } = useI18n()
 const highlightSkillId = useState<string | null>('highlight-skill-id', () => null)
 
-await Promise.all([skillsStore.fetchSkills(), xpStore.fetchDashboard()])
+if (!skillsStore.skills.length) {
+  void skillsStore.fetchSkills()
+}
+
+if (!xpStore.stats && xpStore.activityLogs.length === 0 && xpStore.achievements.length === 0) {
+  void xpStore.fetchDashboard()
+}
 
 const { progress, streak } = useAchievementSystem({
   achievements: computed(() => xpStore.achievements),

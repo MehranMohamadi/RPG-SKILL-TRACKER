@@ -13,6 +13,8 @@ type ActivityPayload = {
   }>
 }
 
+const activitiesPendingBySkill: Record<string, Promise<Activity[]> | null> = {}
+
 export const useActivitiesStore = defineStore('activities', {
   state: () => ({
     itemsBySkill: {} as Record<string, Activity[]>,
@@ -22,23 +24,41 @@ export const useActivitiesStore = defineStore('activities', {
     forSkill: (state) => (skillId: string) => state.itemsBySkill[skillId] ?? []
   },
   actions: {
-    async fetchBySkill(skillId: string) {
+    async fetchBySkill(skillId: string, options?: { force?: boolean }) {
+      const force = options?.force ?? false
+
+      if (!force && this.itemsBySkill[skillId]) {
+        return this.itemsBySkill[skillId]
+      }
+
+      if (!force && activitiesPendingBySkill[skillId]) {
+        return activitiesPendingBySkill[skillId] as Promise<Activity[]>
+      }
+
       this.loading = true
 
-      try {
-        this.itemsBySkill[skillId] = await $fetch<Activity[]>(`/api/skills/${skillId}/activities`)
-        const skillsStore = useSkillsStore()
-        const skill = skillsStore.byId(skillId)
+      const request = $fetch<Activity[]>(`/api/skills/${skillId}/activities`)
+        .then((activities) => {
+          this.itemsBySkill[skillId] = activities
+          const skillsStore = useSkillsStore()
+          const skill = skillsStore.byId(skillId)
 
-        if (skill) {
-          skillsStore.patchSkill({
-            ...skill,
-            activities: this.itemsBySkill[skillId]
-          })
-        }
-      } finally {
-        this.loading = false
-      }
+          if (skill) {
+            skillsStore.patchSkill({
+              ...skill,
+              activities
+            })
+          }
+
+          return activities
+        })
+        .finally(() => {
+          this.loading = false
+          activitiesPendingBySkill[skillId] = null
+        })
+
+      activitiesPendingBySkill[skillId] = request
+      return request
     },
     async createActivity(payload: ActivityPayload) {
       const activity = await $fetch<Activity>('/api/activities', {
