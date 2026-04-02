@@ -65,7 +65,7 @@ export default defineNuxtConfig({
       theme_color: '#2563eb',
       background_color: '#f8fafc',
       display: 'standalone',
-      start_url: '/dashboard',
+      start_url: '/',
       scope: '/',
       icons: [
         {
@@ -87,7 +87,7 @@ export default defineNuxtConfig({
       ]
     },
     workbox: {
-      navigateFallback: '/dashboard'
+      navigateFallback: '/'
     },
     devOptions: {
       enabled: false,
