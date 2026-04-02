@@ -58,6 +58,9 @@ export default defineNuxtConfig({
   },
   pwa: {
     registerType: 'autoUpdate',
+    workbox: {
+      navigateFallback: null
+    },
     manifest: {
       name: 'SkillXP',
       short_name: 'SkillXP',
@@ -85,9 +88,6 @@ export default defineNuxtConfig({
           purpose: 'maskable'
         }
       ]
-    },
-    workbox: {
-      navigateFallback: '/'
     },
     devOptions: {
       enabled: false,
