@@ -75,15 +75,46 @@
 
         <div class="space-y-2">
           <label class="text-sm font-medium text-slate-200" for="password">Password</label>
-          <input
-            id="password"
-            v-model.trim="form.password"
-            type="password"
-            autocomplete="current-password"
-            class="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400"
-            placeholder="At least 6 characters"
-            required
-          >
+          <div class="relative">
+            <input
+              id="password"
+              v-model.trim="form.password"
+              :type="showPassword ? 'text' : 'password'"
+              autocomplete="current-password"
+              class="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 pr-12 text-sm text-slate-100 outline-none transition focus:border-cyan-400"
+              placeholder="At least 6 characters"
+              required
+            >
+            <button
+              type="button"
+              class="absolute inset-y-0 right-3 inline-flex items-center justify-center text-slate-400 transition hover:text-slate-200"
+              :aria-label="showPassword ? 'Hide password' : 'Show password'"
+              @click="showPassword = !showPassword"
+            >
+              <svg
+                v-if="showPassword"
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M3 3L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M10.6 10.7C10.2 11.05 10 11.51 10 12C10 13.1 10.9 14 12 14C12.49 14 12.95 13.8 13.3 13.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M9.4 5.5C10.23 5.18 11.1 5 12 5C16.5 5 20.1 9.1 21 12C20.73 12.87 20.19 13.84 19.42 14.77" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M6.1 6.1C3.91 7.58 2.46 9.95 2 12C3 15 6.6 19 12 19C13.66 19 15.16 18.62 16.48 17.98" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+              <svg
+                v-else
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M2 12C3 9 6.6 5 12 5C17.4 5 21 9 22 12C21 15 17.4 19 12 19C6.6 19 3 15 2 12Z" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <p v-if="errorMessage" class="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
@@ -110,6 +141,7 @@ const { login, register, loading } = useAuth()
 
 const isRegisterMode = ref(false)
 const errorMessage = ref('')
+const showPassword = ref(false)
 const form = reactive({
   name: '',
   email: '',
@@ -152,7 +184,10 @@ const submit = async () => {
 
     await router.push(targetPath.value)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Authentication failed.'
+    const message = error instanceof Error ? error.message : 'Authentication failed.'
+    errorMessage.value = message.includes('already exists')
+      ? 'This email is already registered. Try signing in instead.'
+      : message
   }
 }
 
