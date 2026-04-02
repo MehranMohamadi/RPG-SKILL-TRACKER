@@ -40,6 +40,7 @@
               {{ t('app.dashboard') }}
             </NuxtLink>
             <NuxtLink
+              v-if="sessionToken"
               to="/skills"
               class="rounded-lg px-2.5 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800/90 hover:text-white sm:px-3"
               active-class="bg-blue-600 text-white shadow-sm"
@@ -47,6 +48,7 @@
               {{ t('app.skills') }}
             </NuxtLink>
             <NuxtLink
+              v-if="sessionToken"
               to="/achievements"
               class="rounded-lg px-2.5 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800/90 hover:text-white sm:px-3"
               active-class="bg-blue-600 text-white shadow-sm"
@@ -54,6 +56,22 @@
               {{ t('app.achievements') }}
             </NuxtLink>
           </nav>
+
+          <NuxtLink
+            v-if="!sessionToken"
+            to="/login"
+            class="inline-flex h-8 items-center justify-center rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 text-[11px] font-medium text-cyan-200 transition hover:bg-cyan-400/20"
+          >
+            Login
+          </NuxtLink>
+
+          <button
+            v-else
+            class="inline-flex h-8 items-center justify-center rounded-lg border border-rose-400/20 bg-rose-400/10 px-3 text-[11px] font-medium text-rose-200 transition hover:bg-rose-400/20"
+            @click="signOut"
+          >
+            Logout
+          </button>
 
           <button
             class="inline-flex h-8 min-w-8 items-center justify-center gap-1 rounded-lg border border-slate-700 bg-slate-900/60 px-2 text-[11px] font-medium text-slate-200 transition hover:bg-slate-800/90"
@@ -111,10 +129,16 @@
 const route = useRoute()
 const { toasts, remove } = useToast()
 const { locale, isRtl, t, setLocale } = useI18n()
+const { logout, sessionToken } = useAuth()
 const isLandingPage = computed(() => route.path === '/')
 
 const toggleLocale = () => {
   setLocale(locale.value === 'en' ? 'fa' : 'en')
+}
+
+const signOut = async () => {
+  await logout()
+  await navigateTo('/login')
 }
 
 useHead(() => ({

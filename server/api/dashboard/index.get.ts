@@ -1,9 +1,9 @@
-import { ensureDemoUser } from '../../utils/demo-user'
+import { requireUser } from '../../utils/auth'
 import { prisma } from '../../utils/db'
 import { calculateUserLevel } from '../../utils/xp'
 
-export default defineEventHandler(async () => {
-  const user = await ensureDemoUser()
+export default defineEventHandler(async (event) => {
+  const user = await requireUser(event)
   const startOfToday = new Date()
   startOfToday.setHours(0, 0, 0, 0)
 

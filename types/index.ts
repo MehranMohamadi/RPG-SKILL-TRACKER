@@ -91,6 +91,12 @@ export interface DashboardStats {
   activitiesCompletedToday: number
 }
 
+export interface AuthUser {
+  id: string
+  email: string
+  name: string | null
+}
+
 export interface CompleteActivityResponse {
   skill: Skill
   activityLog: ActivityLog

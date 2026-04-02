@@ -1,10 +1,10 @@
-import { ensureDemoUser } from '../../utils/demo-user'
+import { requireUser } from '../../utils/auth'
 import { unlockAchievements } from '../../utils/achievements'
 import { prisma } from '../../utils/db'
 import { applyXpGain } from '../../utils/xp'
 
 export default defineEventHandler(async (event) => {
-  const user = await ensureDemoUser()
+  const user = await requireUser(event)
   const body = await readBody<{
     activityId?: string
     subActivityId?: string

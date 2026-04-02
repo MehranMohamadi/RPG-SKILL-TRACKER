@@ -1,8 +1,8 @@
-import { ensureDemoUser } from '../../utils/demo-user'
+import { requireUser } from '../../utils/auth'
 import { prisma } from '../../utils/db'
 
-export default defineEventHandler(async () => {
-  const user = await ensureDemoUser()
+export default defineEventHandler(async (event) => {
+  const user = await requireUser(event)
 
   return prisma.skill.findMany({
     where: { userId: user.id },
