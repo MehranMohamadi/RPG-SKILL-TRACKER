@@ -184,10 +184,19 @@ const submit = async () => {
 
     await router.push(targetPath.value)
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Authentication failed.'
-    errorMessage.value = message.includes('already exists')
-      ? 'This email is already registered. Try signing in instead.'
-      : message
+    const message = error instanceof Error ? error.message : 'We could not sign you in right now.'
+    errorMessage.value =
+      message === 'This email is already in use. Try signing in instead.'
+        ? 'This email is already registered. Try signing in instead.'
+        : message === 'That email or password does not look right.'
+          ? 'We could not find a match for that email and password.'
+          : message === 'Please enter both your email and password.'
+            ? 'Enter your email and password to continue.'
+            : message === 'Please enter both an email and a password.'
+              ? 'Add an email and password to create your account.'
+              : message === 'Choose a password with at least 6 characters.'
+                ? 'Your password needs at least 6 characters.'
+                : 'Something went wrong. Please try again.'
   }
 }
 

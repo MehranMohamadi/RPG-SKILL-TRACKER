@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   if (!email || !password) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Email and password are required.'
+      statusMessage: 'Please enter both your email and password.'
     })
   }
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   if (!user?.passwordHash || !verifyPassword(password, user.passwordHash)) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Invalid email or password.'
+      statusMessage: 'That email or password does not look right.'
     })
   }
 

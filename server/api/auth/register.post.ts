@@ -16,14 +16,14 @@ export default defineEventHandler(async (event) => {
   if (!email || !password) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Email and password are required.'
+      statusMessage: 'Please enter both an email and a password.'
     })
   }
 
   if (password.length < 6) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Password must be at least 6 characters.'
+      statusMessage: 'Choose a password with at least 6 characters.'
     })
   }
 
@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       throw createError({
         statusCode: 409,
-        statusMessage: 'An account with this email already exists.'
+        statusMessage: 'This email is already in use. Try signing in instead.'
       })
     }
 
