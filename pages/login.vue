@@ -47,6 +47,19 @@
         </div>
       </div>
 
+      <a
+        href="/api/auth/google"
+        class="mt-4 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-700 bg-slate-950/80 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:bg-slate-900"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#EA4335" d="M12 10.2v4.2h5.9c-.3 1.4-1.8 4.2-5.9 4.2-3.6 0-6.5-3-6.5-6.6s2.9-6.6 6.5-6.6c2 0 3.4.9 4.2 1.6l2.8-2.7C17.3 2.8 14.9 1.8 12 1.8 6.5 1.8 2 6.3 2 12s4.5 10.2 10 10.2c5.8 0 9.6-4.1 9.6-9.8 0-.7-.1-1.2-.2-1.8H12Z" />
+          <path fill="#34A853" d="M2 12c0 2.1.8 4 2.1 5.5l3.3-2.6c-.9-.8-1.4-1.9-1.4-2.9 0-1 .4-2.1 1.3-2.9L4.1 6.6C2.8 8.1 2 9.9 2 12Z" />
+          <path fill="#4A90E2" d="M12 22.2c2.7 0 5-.9 6.7-2.5l-3.2-2.6c-.9.6-2.1 1.1-3.5 1.1-2.7 0-4.9-1.8-5.7-4.2L3 16.6c1.7 3.4 5.1 5.6 9 5.6Z" />
+          <path fill="#FBBC05" d="M6.3 14c-.2-.6-.3-1.2-.3-2s.1-1.4.3-2L3 7.4C2.3 8.8 2 10.3 2 12s.3 3.2 1 4.6L6.3 14Z" />
+        </svg>
+        <span>Continue with Google</span>
+      </a>
+
       <form class="mt-6 space-y-4" @submit.prevent="submit">
         <div v-if="isRegisterMode" class="space-y-2">
           <label class="text-sm font-medium text-slate-200" for="name">Name</label>

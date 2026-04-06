@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   experimental: {
     appManifest: false
   },
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@vite-pwa/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@vite-pwa/nuxt', 'nuxt-auth-utils'],
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL,
