@@ -87,16 +87,16 @@
 
 <script setup lang="ts">
 interface HeroHighlight {
-  title: string
-  copy: string
+  readonly title: string
+  readonly copy: string
 }
 
 interface HeroPreviewCard {
-  name: string
-  copy: string
-  badge: string
-  badgeClass: string
-  progress: string
+  readonly name: string
+  readonly copy: string
+  readonly badge: string
+  readonly badgeClass: string
+  readonly progress: string
 }
 
 defineProps<{
@@ -107,7 +107,7 @@ defineProps<{
   secondaryCta: string
   previewTitle: string
   previewSubtitle: string
-  highlights: HeroHighlight[]
-  previewCards: HeroPreviewCard[]
+  highlights: ReadonlyArray<HeroHighlight>
+  previewCards: ReadonlyArray<HeroPreviewCard>
 }>()
 </script>

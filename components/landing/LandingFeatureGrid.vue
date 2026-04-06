@@ -31,10 +31,10 @@ defineProps<{
   eyebrow: string
   title: string
   description: string
-  features: Array<{
-    icon: string
-    title: string
-    copy: string
+  features: ReadonlyArray<{
+    readonly icon: string
+    readonly title: string
+    readonly copy: string
   }>
 }>()
 </script>

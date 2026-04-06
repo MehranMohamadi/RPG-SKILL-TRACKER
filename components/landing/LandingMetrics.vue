@@ -14,10 +14,10 @@
 
 <script setup lang="ts">
 defineProps<{
-  items: Array<{
-    value: string
-    label: string
-    copy: string
+  items: ReadonlyArray<{
+    readonly value: string
+    readonly label: string
+    readonly copy: string
   }>
 }>()
 </script>

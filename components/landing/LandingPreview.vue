@@ -71,11 +71,11 @@ defineProps<{
   title: string
   description: string
   sideTitle: string
-  sidePoints: string[]
-  timeline: Array<{
-    title: string
-    copy: string
-    badge: string
+  sidePoints: ReadonlyArray<string>
+  timeline: ReadonlyArray<{
+    readonly title: string
+    readonly copy: string
+    readonly badge: string
   }>
   ctaEyebrow: string
   ctaTitle: string

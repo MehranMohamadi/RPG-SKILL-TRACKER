@@ -301,14 +301,14 @@ const landingContent = {
   }
 } as const
 
-const content = computed(() => landingContent[locale.value])
+const content = computed(() => (locale.value === 'fa' ? landingContent.fa : landingContent.en))
 
-useSeoMeta(() => ({
-  title: content.value.seo.title,
-  description: content.value.seo.description,
-  ogTitle: content.value.seo.title,
-  ogDescription: content.value.seo.description,
-  twitterTitle: content.value.seo.title,
-  twitterDescription: content.value.seo.description
-}))
+useSeoMeta({
+  title: () => content.value.seo.title,
+  description: () => content.value.seo.description,
+  ogTitle: () => content.value.seo.title,
+  ogDescription: () => content.value.seo.description,
+  twitterTitle: () => content.value.seo.title,
+  twitterDescription: () => content.value.seo.description
+})
 </script>
